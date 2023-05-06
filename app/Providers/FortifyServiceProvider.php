@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Actions\Fortify\AuthenticateUser;
 use App\Actions\Fortify\CreateNewUser;
 use App\Actions\Fortify\ResetUserPassword;
 use App\Actions\Fortify\UpdateUserPassword;
@@ -26,6 +27,7 @@ class FortifyServiceProvider extends ServiceProvider
             Config::set('fortify.guard','admin');
             Config::set('fortify.passwords','admins');
             Config::set('fortify.prefix','admin');
+            Config::set('fortify.home','admin/dashboard');
         }
     }
 
@@ -44,12 +46,15 @@ class FortifyServiceProvider extends ServiceProvider
 
             return Limit::perMinute(5)->by($email.$request->ip());
         });
-
+        Fortify::twoFactorChallengeView(function () {
+            return view('auth.two-factor-challenge');
+        });
         RateLimiter::for('two-factor', function (Request $request) {
             return Limit::perMinute(5)->by($request->session()->get('login.id'));
         });
 
         if(Config::get('fortify.guard')=='admin'){
+            Fortify::authenticateUsing([new AuthenticateUser(),'authenticate']);
             Fortify::viewPrefix('auth.');
         }
         else{
