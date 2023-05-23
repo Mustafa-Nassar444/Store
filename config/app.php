@@ -17,6 +17,7 @@ return [
 
     'name' => env('APP_NAME', 'Laravel'),
     'currency'=>'USD',
+    'api_token'=>env('API_TOKEN'),
     /*
     |--------------------------------------------------------------------------
     | Application Environment
