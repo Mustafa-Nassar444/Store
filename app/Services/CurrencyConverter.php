@@ -7,13 +7,13 @@ use Illuminate\Support\Facades\Http;
 class CurrencyConverter
 {
     private $apiKey;
-    protected $baseUrl='https://free.currencyconverterapi.com/api/v7';
+    protected $baseUrl="https://free.currconv.com/api/v7";
     public function __construct(string $apiKey)
     {
         $this->apiKey=$apiKey;
     }
     public function convert(string $from,string $to, float $amount=1):float{
-        $q="{$from}_{$to}";
+        $q = "{$from}_{$to}";
         $response=Http::baseUrl($this->baseUrl)
             ->get('/convert',[
                 'q'=>$q,
@@ -21,6 +21,6 @@ class CurrencyConverter
                 'apiKey'=>$this->apiKey,
             ]);
         $result=$response->json();
-        return $result[$q]=$amount;
+        return $result[$q]['val'] * $amount;
     }
 }

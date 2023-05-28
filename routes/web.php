@@ -21,6 +21,6 @@ Route::resource('cart',\App\Http\Controllers\Front\CartController::class);
 Route::get('checkout',[\App\Http\Controllers\Front\CheckoutController::class,'create'])->name('checkout');
 Route::post('checkout',[\App\Http\Controllers\Front\CheckoutController::class,'store']);
 Route::get('/2fa',\App\Http\Controllers\Front\Auth\TwoFactorAuthenticationController::class);
-
+Route::post('currency',[\App\Http\Controllers\Front\CurrencyConverterController::class,'store'])->name('currency.store');
 //require __DIR__.'/auth.php';
 require __DIR__.'/dashboard.php';

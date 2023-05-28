@@ -49,14 +49,16 @@
                         <ul class="menu-top-link">
                             <li>
                                 <div class="select-position">
-                                    <select id="select4">
-                                        <option value="0" selected>$ USD</option>
-                                        <option value="1">€ EURO</option>
-                                        <option value="2">$ CAD</option>
-                                        <option value="3">₹ INR</option>
-                                        <option value="4">¥ CNY</option>
-                                        <option value="5">৳ BDT</option>
+                                    <form action="{{route('currency.store')}}" method="POST" >
+                                        @csrf
+                                    <select name="currency_code" onchange="this.form.submit()">
+                                        <option value="EGP" @selected(session('currency_code')=='EGP')> EGP</option>
+                                        <option value="USD" @selected(session('currency_code')=='USD')>$ USD</option>
+                                        <option value="EUR" @selected(session('currency_code')=='EUR')>€ EURO</option>
+                                        <option value="SAR" @selected(session('currency_code')=='SAR')> SAR</option>
+                                        <option value="QAR" @selected(session('currency_code')=='QAR')> QAR</option>
                                     </select>
+                                    </form>
                                 </div>
                             </li>
                             <li>
@@ -67,8 +69,6 @@
                                         <option value="2">Filipino</option>
                                         <option value="3">Français</option>
                                         <option value="4">العربية</option>
-                                        <option value="5">हिन्दी</option>
-                                        <option value="6">বাংলা</option>
                                     </select>
                                 </div>
                             </li>
