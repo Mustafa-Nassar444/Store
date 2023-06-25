@@ -6,7 +6,9 @@
 @endsection
 @section('content')
     <div class="mb-5">
+        @can('category.create')
         <a href="{{route('categories.create')}}" class="btn btn-sm btn-outline-primary">Create</a>
+        @endcan
         <a href="{{route('categories.trashed')}}" class="btn btn-sm btn-outline-info">Trash</a>
 
     </div>
@@ -68,17 +70,19 @@
                         {{$category->created_at}}
                     </td>
                     <td>
-
+                            @can('category.update')
                             <a href="{{route('categories.edit',$category->id)}}" class="btn btn-outline-primary" type="submit">Edit</a>
+                        @endcan
                     </td>
                         <td>
+                            @can('category.delete')
                         <form action="{{route('categories.destroy',$category->id)}}" method="post">
                             @method('DELETE')
                             @csrf
                             <button class="btn btn-outline-danger" type="submit">Delete</button>
 
                         </form>
-
+                            @endcan
                     </td>
                 </tr>
             @empty

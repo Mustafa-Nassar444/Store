@@ -8,6 +8,7 @@ use App\Models\Category;
 use App\Traits\UploadImageTrait;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Storage;
 
 class CategoryController extends Controller
@@ -20,6 +21,8 @@ class CategoryController extends Controller
      */
     public function index()
     {
+        if(Gate::denies('category.view'))
+            abort(403);
         $request=request();
 
         $categories=Category::leftJoin('categories as parents','parents.id','=','categories.parent_id')
@@ -37,6 +40,8 @@ class CategoryController extends Controller
      */
     public function create()
     {
+        if(Gate::denies('category.create'))
+            abort(403);
         $parents=Category::all();
         return view('dashboard.categories.create',compact('parents'));
     }
@@ -71,6 +76,8 @@ class CategoryController extends Controller
      */
     public function show(Category $category)
     {
+        if(Gate::denies('category.view'))
+            abort(403);
         return view('dashboard.categories.show',[
            'category'=>$category
         ]);
@@ -85,7 +92,8 @@ class CategoryController extends Controller
     public function edit($id)
     {
         //
-
+        if(Gate::denies('category.update'))
+            abort(403);
         $category=Category::findOrFail($id);
         $parents=Category::where('id','<>',$id)
             ->where(function ($query) use($id){
@@ -129,6 +137,8 @@ class CategoryController extends Controller
     public function destroy($id)
     {
         //
+        if(Gate::denies('category.delete'))
+            abort(403);
         $category=Category::findOrFail($id);
         $category->delete();
 

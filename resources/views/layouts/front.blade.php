@@ -62,14 +62,16 @@
                                 </div>
                             </li>
                             <li>
-                                <div class="select-position">
-                                    <select id="select5">
-                                        <option value="0" selected>English</option>
-                                        <option value="1">Español</option>
-                                        <option value="2">Filipino</option>
-                                        <option value="3">Français</option>
-                                        <option value="4">العربية</option>
-                                    </select>
+                                <div class="">
+                                        <ul>
+                                            @foreach(LaravelLocalization::getSupportedLocales() as $localeCode => $properties)
+                                                <li>
+                                                    <a rel="alternate" hreflang="{{ $localeCode }}" href="{{ LaravelLocalization::getLocalizedURL($localeCode, null, [], true) }}">
+                                                        {{ $properties['native'] }}
+                                                    </a>
+                                                </li>
+                                            @endforeach
+                                        </ul>
                                 </div>
                             </li>
                         </ul>
@@ -78,9 +80,9 @@
                 <div class="col-lg-4 col-md-4 col-12">
                     <div class="top-middle">
                         <ul class="useful-links">
-                            <li><a href="{{route('home')}}">{{ trans('Home') }}</a></li>
-                            <li><a href="about-us.html">@lang('About Us')</a></li>
-                            <li><a href="contact.html">{{ __('Contact Us') }}</a></li>
+                            <li><a href="{{route('home')}}">{{ __('app.home') }}</a></li>
+                            <li><a href="about-us.html">{{__('app.about us')}}</a></li>
+                            <li><a href="contact.html">{{ __('app.contact us') }}</a></li>
                         </ul>
                     </div>
                 </div>
@@ -93,7 +95,7 @@
                             </div>
                             <ul class="user-login">
                                 <li>
-                                    <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout').submit()">Logout</a>
+                                    <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout').submit()">{{__('app.logout')}}</a>
                                 </li>
                                 <form action="{{ route('logout') }}" id="logout" method="post" style="display:none">
                                     @csrf
@@ -102,14 +104,14 @@
                         @else
                             <div class="user">
                                 <i class="lni lni-user"></i>
-                                {{ __('Hello')}}
+                                {{ __('app.hello')}}
                             </div>
                             <ul class="user-login">
                                 <li>
-                                    <a href="{{ route('login') }}">{{ Lang::get('Sign In') }}</a>
+                                    <a href="{{ route('login') }}">{{ __('app.sign in') }}</a>
                                 </li>
                                 <li>
-                                    <a href="{{ route('register') }}">{{ __('Register') }}</a>
+                                    <a href="{{ route('register') }}">{{ __('app.register') }}</a>
                                 </li>
                             </ul>
                         @endauth
