@@ -3,14 +3,14 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
-use App\Models\Role;
+use App\Models\Order;
 use Illuminate\Http\Request;
 
-class RoleController extends Controller
+class OrderController extends Controller
 {
     public function __construct()
     {
-        $this->authorizeResource(Role::class, 'role');
+        $this->authorizeResource(Order::class, 'order');
     }
     /**
      * Display a listing of the resource.
@@ -20,9 +20,8 @@ class RoleController extends Controller
     public function index()
     {
         //
-        $roles=Role::paginate();
-        return view('dashboard.roles.index',compact('roles'));
-
+        $orders=Order::paginate();
+        return view('dashboard.orders.index',compact('orders'));
     }
 
     /**
@@ -33,9 +32,6 @@ class RoleController extends Controller
     public function create()
     {
         //
-        return view('dashboard.roles.create',[
-            'role'=>new Role(),
-        ]);
     }
 
     /**
@@ -47,12 +43,6 @@ class RoleController extends Controller
     public function store(Request $request)
     {
         //
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'abilities' => 'required|array',
-        ]);
-       $role= Role::createWithAbility($request);
-        return redirect()->route('roles.index')->with(['success'=>'Role Created Successfully']);
     }
 
     /**
@@ -63,7 +53,7 @@ class RoleController extends Controller
      */
     public function show($id)
     {
-        //
+
     }
 
     /**
@@ -72,12 +62,9 @@ class RoleController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Role $role)
+    public function edit($id)
     {
         //
-        $role_abilities=$role->abilities()->pluck('type','ability')->toArray();
-        return view('dashboard.roles.edit',compact('role','role_abilities'));
-
     }
 
     /**
@@ -87,15 +74,9 @@ class RoleController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Role $role)
+    public function update(Request $request, $id)
     {
         //
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'abilities' => 'required|array',
-        ]);
-        $role->updateWithAbility($request);
-        return redirect()->route('roles.index')->with(['success'=>'Role Updated Successfully']);
     }
 
     /**
@@ -104,10 +85,24 @@ class RoleController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
-    {
-        //
-        Role::destroy($id);
-        return redirect()->route('roles.index')->with('success','Role Deleted Successfully');
+    public function destroy(Order $order){
+        $order->delete();
+        return redirect()->route('orders.index')->with(['success'=>'Order Deleted!!']);
     }
+    public function getTrashed(){
+        $orders=Order::onlyTrashed()->paginate();
+        return view('dashboard.orders.trash',compact('orders'));
+    }
+    public function restore(Request $request,$id){
+        $order=Order::onlyTrashed()->findOrFail($id);
+        $order->restore();
+        return redirect()->route('orders.trashed')->with(['success','Order restored Successfully']);
+
+    }
+    public function force($id){
+        $order=Order::onlyTrashed()->findOrFail($id);
+        $order->forceDelete();
+        return redirect()->route('orders.trashed')->with(['success'=>'Order Deleted']);
+    }
+
 }

@@ -42,7 +42,8 @@
                     <td><a href="{{route('roles.show',$role->id)}}" >{{$role->name}}</a></td>
 
                     <td>
-                            @can('role.update')<a href="{{route('roles.edit',$role->id)}}" class="btn btn-outline-primary" type="submit">Edit</a>
+                            @can('role.update')
+                            <a href="{{route('roles.edit',$role->id)}}" class="btn btn-outline-primary" type="submit">Edit</a>
                         @endcan
                     </td>
                     <td>

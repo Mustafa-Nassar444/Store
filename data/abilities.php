@@ -20,6 +20,11 @@ return [
     'user.update'=>'Update User',
     'user.delete'=>'Delete User',
 
+    'admin.view'=>'View Admins',
+    'admin.create'=>'Create Admin',
+    'admin.update'=>'Update Admin',
+    'admin.delete'=>'Delete Admin',
+
     'role.view'=>'View Roles',
     'role.create'=>'Create Role',
     'role.update'=>'Update Role',

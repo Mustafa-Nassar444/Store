@@ -4,11 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Carbon;
 
 class Order extends Model
 {
-    use HasFactory;
+    use HasFactory,SoftDeletes;
+
     protected $fillable=['store_id','user_id','payment_method','status','payment_status'];
     public function store(){
         return $this->belongsTo(Store::class);

@@ -22,7 +22,7 @@ return [
     ],
     [
         'icon' => 'fas fa-receipt nav-icon',
-        'route' => 'categories.index',
+        'route' => 'orders.index',
         'title' => 'Orders',
         'active' => 'orders.*',
         'ability' => 'order.view',

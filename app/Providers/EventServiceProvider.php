@@ -26,7 +26,7 @@ class EventServiceProvider extends ServiceProvider
 
         OrderCreated::class=>[
             DeeductProductQuantity::class,
-            //EmptyCart::class,
+            EmptyCart::class,
             SendOrderCreatedNotification::class,
         ]
     ];
@@ -39,6 +39,7 @@ class EventServiceProvider extends ServiceProvider
     public function boot()
     {
         //
+
     }
 
     /**

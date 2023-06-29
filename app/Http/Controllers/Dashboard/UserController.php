@@ -9,6 +9,10 @@ use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
+    public function __construct()
+    {
+        $this->authorizeResource(User::class, 'user');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -31,7 +35,7 @@ class UserController extends Controller
         //
         return view('dashboard.users.create',compact([
             'roles'=>Role::all(),
-            'admins'=>new User(),
+            'user'=>new User(),
         ]));
     }
 
@@ -75,7 +79,7 @@ class UserController extends Controller
         //
         $roles=Role::all();
         $user_roles=$user->roles()->pluck('id')->toArray();
-        return view('dashboard.users.create',compact([
+        return view('dashboard.users.edit',compact([
             'user','user_roles','roles'
         ]));
     }

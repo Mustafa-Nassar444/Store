@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Dashboard;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ProductRequest;
 use App\Http\Requests\ProfileRequest;
+use App\Models\Admin;
 use App\Models\Product;
 use App\Models\Tag;
 use App\Traits\UploadImageTrait;
@@ -14,6 +15,11 @@ use Illuminate\Support\Str;
 class ProductController extends Controller
 {
     use UploadImageTrait;
+    public function __construct()
+    {
+        $this->authorizeResource(Product::class, 'product');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -33,6 +39,7 @@ class ProductController extends Controller
     public function create()
     {
         //
+
     }
 
     /**
@@ -44,6 +51,7 @@ class ProductController extends Controller
     public function store(Request $request)
     {
         //
+
     }
 
     /**
@@ -63,10 +71,10 @@ class ProductController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Product $product)
     {
         //
-        $product=Product::findOrFail($id);
+       // $product=Product::findOrFail($id);
         $tags=implode(',',$product->tags()->pluck('name')->toArray());
        // $tags=$product->tags()->pluck('name');
         return view('dashboard.products.edit',compact('product','tags'));

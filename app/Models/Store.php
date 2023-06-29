@@ -10,7 +10,7 @@ class Store extends Model
 {
     use HasFactory,Notifiable;
 
-
+    protected $fillable=['id','name','slug','description','logo_image','cover_image','status'];
     public function products(){
         return $this->hasMany(Product::class,'store_id','id');
     }

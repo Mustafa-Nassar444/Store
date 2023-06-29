@@ -10,10 +10,15 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class CategoryController extends Controller
 {
     use UploadImageTrait;
+    public function __construct()
+    {
+        $this->authorizeResource(Category::class, 'category');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -21,8 +26,8 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        if(Gate::denies('category.view'))
-            abort(403);
+        /*if(Gate::denies('category.view'))
+            abort(403);*/
         $request=request();
 
         $categories=Category::leftJoin('categories as parents','parents.id','=','categories.parent_id')
@@ -40,10 +45,11 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        if(Gate::denies('category.create'))
-            abort(403);
-        $parents=Category::all();
-        return view('dashboard.categories.create',compact('parents'));
+        /*if(Gate::denies('category.create'))
+            abort(403);*/
+        $parents = Category::all();
+        $category = new Category();
+        return view('dashboard.categories.create', compact('category', 'parents'));
     }
 
     /**
@@ -54,17 +60,30 @@ class CategoryController extends Controller
      */
     public function store(CategoryRequest $request)
     {
-        if($request->hasFile('image')) {
+       /* if($request->hasFile('image')) {
             $img= $this->uploadImage($request,'uploads');
         }
         //
+        $request->merge([
+           'slug'=>Str::slug($request->post('name'))
+        ]);
         $category=Category::create([
             'name'=>$request->name,
             'parent_id'=>$request->parent_id,
             'description'=>$request->description,
             'image'=>$img,
             'status'=>$request->status
+        ]);*/
+        $request->merge([
+            'slug' => Str::slug($request->post('name'))
         ]);
+
+        $data = $request->except('image');
+        $data['image'] =  $this->uploadImage($request,'uploads');;
+
+
+        // Mass assignment
+        $category = Category::create( $data );
         return redirect()->route('categories.index')->with(['success'=>'Category Saved']);
     }
 
@@ -89,12 +108,12 @@ class CategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Category $category)
     {
         //
-        if(Gate::denies('category.update'))
-            abort(403);
-        $category=Category::findOrFail($id);
+       /* if(Gate::denies('category.update'))
+            abort(403);*/
+        $id=$category->id;
         $parents=Category::where('id','<>',$id)
             ->where(function ($query) use($id){
                 $query->whereNull('parent_id')
@@ -111,11 +130,11 @@ class CategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(CategoryRequest $request, $id)
+    public function update(CategoryRequest $request, Category $category)
     {
         //
 
-        $category=Category::findOrFail($id);
+      //  $category=Category::findOrFail($id);
         $old_img=$category->image;
         $data=$request->except('image');
         if($request->hasFile('image')) {
@@ -134,12 +153,12 @@ class CategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Category $category)
     {
         //
-        if(Gate::denies('category.delete'))
-            abort(403);
-        $category=Category::findOrFail($id);
+       /* if(Gate::denies('category.delete'))
+            abort(403);*/
+      //  $category=Category::findOrFail($id);
         $category->delete();
 
 

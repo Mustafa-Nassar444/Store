@@ -14,7 +14,17 @@ class AuthServiceProvider extends ServiceProvider
      * @var array<class-string, class-string>
      */
     protected $policies = [
-        // 'App\Models\Model' => 'App\Policies\ModelPolicy',
+        'App\Models\Category' => 'App\Policies\CategoryPolicy',
+        'App\Models\Product' => 'App\Policies\ProductPolicy',
+        'App\Models\User' => 'App\Policies\UserPolicy',
+        'App\Models\Order' => 'App\Policies\OrderPolicy',
+        'App\Models\Role' => 'App\Policies\RolePolicy',
+        'App\Models\Admin' => 'App\Policies\AdminPolicy',
+
+
+
+
+
     ];
 
     /**
@@ -42,18 +52,6 @@ class AuthServiceProvider extends ServiceProvider
                return $user->userAbilities($code);
             });
         }
-      /*  Gate::define('category.view',function ($user){
-           return true;
-        });
-        Gate::define('category.create',function ($user){
-            return true;
-        });
-        Gate::define('category.update',function ($user){
-            return true;
-        });
-        Gate::define('category.delete',function ($user){
-            return false;
-        });*/
-        //
+
     }
 }
