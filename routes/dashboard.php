@@ -34,7 +34,8 @@ Route::group(['middleware'=>['auth:admin,web'],'prefix'=>'admin/dashboard','name
     Route::get('orders/trashed',[OrderController::class,'getTrashed'])->name('orders.trashed');
     Route::put('orders/restore/{order}',[OrderController::class,'restore'])->name('orders.restore');
     Route::delete('orders/forceDelete/{order}',[OrderController::class,'force'])->name('orders.forceDelete');
-
+    Route::get('products/import',[\App\Http\Controllers\Dashboard\ImportProductController::class,'create'])->name('products.import');
+    Route::post('products/import',[\App\Http\Controllers\Dashboard\ImportProductController::class,'store']);
     Route::resources([
         '/categories'=>CategoryController::class,
         '/products'=>ProductController::class,

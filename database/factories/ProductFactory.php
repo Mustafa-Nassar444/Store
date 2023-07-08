@@ -18,8 +18,9 @@ class ProductFactory extends Factory
      * @return array<string, mixed>
      */
     public function definition()
-    {
+    {$this->faker->locale('en');
         $name=$this->faker->words(2,true);
+
         return [
             //
 
